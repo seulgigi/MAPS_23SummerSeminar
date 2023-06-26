@@ -10,6 +10,7 @@ class Job:
         self.start = -1  # 작업의 시작 시간
         self.end = -1  # 작업이 끝나는 시간
         self.assignedMch = -1
+        self.due = -1
 
     def __repr__(self):
         return 'Job ' + str(self.ID)
@@ -58,6 +59,7 @@ def generate_prob(numJob, numMch) -> Instance:
     setup_matrix = [*range(0, numMch)]
     for m in machines:
         for j in jobs:
+            job_list[j].due = random.randint(10, 40)
             for j in jobs:
                 setup_matrix[m] = [[random.randint(6, 15) for j in jobs] for j in jobs]
 
@@ -66,10 +68,10 @@ def generate_prob(numJob, numMch) -> Instance:
 
 def scheduling(prob:Instance, alg:str) -> Schedule:
     if alg == 'EDD':  # 납기일이 빠른 순서대로 스케줄링
-        # sorted_job = sorted(prob.job_list, key=lambda j: j.end)
+        sorted_job = sorted(prob.job_list, key=lambda j: j.due)
         # # 작업 종료 시간(납기일)을 기준으로 오름차순 정렬
 
-        for j in prob.job_list:
+        for j in sorted_job:
             selected_machine = min(prob.machine_list, key=lambda m: m.available)
             # machine의 이전 작업이 끝나는 시간, 즉 end가 빠른 machine을 선택
 
