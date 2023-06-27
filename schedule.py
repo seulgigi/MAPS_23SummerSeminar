@@ -13,3 +13,5 @@ class Bar:
         self.start
         self.end
         self.setup
+
+# 연습중
