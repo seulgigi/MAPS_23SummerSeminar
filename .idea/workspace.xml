@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="pttime 출력">
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="duetime 확인" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,7 +99,21 @@
       <option name="project" value="LOCAL" />
       <updated>1687827587169</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="duetime 확인">
+      <created>1687842315326</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1687842315326</updated>
+    </task>
+    <task id="LOCAL-00004" summary="duetime 확인">
+      <created>1687842398923</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1687842398923</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -141,7 +153,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="pttime만 따로 출력" />
     <MESSAGE value="pttime 출력" />
-    <option name="LAST_COMMIT_MESSAGE" value="pttime 출력" />
+    <MESSAGE value="duetime 확인" />
+    <option name="LAST_COMMIT_MESSAGE" value="duetime 확인" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
