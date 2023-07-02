@@ -1,5 +1,5 @@
 import random
-from schedule import *
+from schedule import Schedule, Bar
 
 class Job:
     type = 'Unrelated PMSP with SDST'  # class variable shared by all instances
@@ -67,6 +67,8 @@ def generate_prob(numJob, numMch) -> Instance:
 
 
 def scheduling(prob:Instance, alg:str) -> Schedule:
+    schedule_list = [[] for _ in range(prob.numMch)]
+
     if alg == 'EDD':  # 납기일이 빠른 순서대로 스케줄링
         sorted_job = sorted(prob.job_list, key=lambda j: j.due)
         # # 작업 종료 시간(납기일)을 기준으로 오름차순 정렬
@@ -75,31 +77,35 @@ def scheduling(prob:Instance, alg:str) -> Schedule:
             selected_machine = min(prob.machine_list, key=lambda m: m.available)
             # machine의 이전 작업이 끝나는 시간, 즉 end가 빠른 machine을 선택
 
-            if len(selected_machine.assigned) == 0:
-                j.start = selected_machine.available
-            else:
-                j.start = selected_machine.available + prob.getSetup(selected_machine.assigned[-1], j, selected_machine)
-                # selected_machine에 이전 작업에서 현재 작업으로의 setuptime을 더함
-
-            j.end = j.start + prob.getPTime(j, selected_machine)
-            # 작업 종료 시간 설정
-
-            j.assignedMch = selected_machine.ID
-            # job 지정된 machine의 번호 저장
-
-            selected_machine.available = j.end
-            # 기계의 다음 작업 시작 시간
-
-            selected_machine.assigned.append(j)
-            # 기계에 할당된 작업 추가
-
-        for m in prob.machine_list:
-            print(m.assigned)
-
+            schedule_list[selected_machine.ID].append(match_job_bar(prob, selected_machine, j))
 
     print('Scheduling is done.')
+    return Schedule('EDD', prob, schedule_list)
 
+def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
+    job_setup = 0
+    if len(machine.assigned) == 0:
+        job.start = machine.available
+    else:
+        job_setup = prob.getSetup(machine.assigned[-1], job, machine)
+        job.start = machine.available + job_setup
+        # selected_machine에 이전 작업에서 현재 작업으로의 setuptime을 더함
+
+    job.end = job.start + prob.getPTime(job, machine)
+    # 작업 종료 시간 설정
+
+    job.assignedMch = machine.ID
+    # job 지정된 machine의 번호 저장
+
+    machine.available = job.end
+    # 기계의 다음 작업 시작 시간
+
+    machine.assigned.append(job)
+    # 기계에 할당된 작업 추가
+
+    return Bar(job, job_setup)
 
 if __name__ == '__main__':
     test_instance = generate_prob(numJob=10, numMch=5)
     schedule = scheduling(test_instance, 'EDD')
+    schedule.print_schedule()
