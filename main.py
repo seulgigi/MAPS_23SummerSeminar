@@ -109,3 +109,41 @@ if __name__ == '__main__':
     test_instance = generate_prob(numJob=10, numMch=5)
     schedule = scheduling(test_instance, 'EDD')
     schedule.print_schedule()
+
+import matplotlib.pyplot as plt
+
+
+def draw_gantt_chart(schedule: Schedule, prob: Instance):
+    plt.figure(figsize=(25, 5))
+
+    # 각각의 스케줄 가져오기
+    for machine_id, bars in enumerate(schedule.schedule):
+        # 기계 선정
+        machine = prob.machine_list[machine_id]
+        # 이전 끝난 시간
+        prev_end = 0
+        # 기계에서 작업가져오기
+        for i, bar in enumerate(bars):
+            job = bar.job
+            # setup time 계산
+            setup_time = prob.getSetup(machine.assigned[-1], job, machine) if machine.assigned else 0
+            # 차트 그리기
+            if prev_end == 0:
+                plt.barh(machine_id, bar.end - bar.start, left=prev_end, height=1,label=f'Job {job.ID}', alpha=0.4)
+            else:
+                plt.barh(machine_id, bar.end - bar.start, left=prev_end+setup_time, height=1, label=f'Job {job.ID}', alpha=0.4)
+                plt.barh(machine_id, setup_time, left=prev_end, height=0.5, color='gray', alpha=0.2)
+            # 다시 시작할 시간 설정
+            prev_end = bar.end
+    # 그래프 그리기
+    plt.xlabel('Time')
+    plt.ylabel('Machine')
+    plt.yticks(range(prob.numMch), [f'Machine {i}' for i in range(prob.numMch)])
+    plt.title('Gantt Chart')
+    plt.legend(loc='upper right')
+
+    # Show the chart
+    plt.tight_layout()
+    plt.show()
+
+draw_gantt_chart(schedule, test_instance)
