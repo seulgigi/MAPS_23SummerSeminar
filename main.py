@@ -141,7 +141,6 @@ def draw_gantt_chart(schedule: Schedule, prob: Instance):
     plt.yticks(range(prob.numMch), [f'Machine {i}' for i in range(prob.numMch)])
     plt.title('Gantt Chart')
     plt.legend(loc='upper right')
-
     # Show the chart
     plt.tight_layout()
     plt.show()
