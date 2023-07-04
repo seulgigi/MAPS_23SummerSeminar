@@ -117,16 +117,18 @@ def draw_gantt_chart(schedule: Schedule, prob: Instance):
     plt.figure(figsize=(25, 5))
 
     # 각각의 스케줄 가져오기
-    for machine_id, bars in enumerate(schedule.schedule):
+    for machine_id, sch in enumerate(schedule.schedule):
+        t=0
         # 기계 선정
         machine = prob.machine_list[machine_id]
         # 이전 끝난 시간
         prev_end = 0
         # 기계에서 작업가져오기
-        for i, bar in enumerate(bars):
+        for i, bar in enumerate(sch):
             job = bar.job
             # setup time 계산
-            setup_time = prob.getSetup(machine.assigned[-1], job, machine) if machine.assigned else 0
+            setup_time = prob.getSetup(machine.assigned[t-1], job, machine) if machine.assigned else 0
+            t+=1
             # 차트 그리기
             if prev_end == 0:
                 plt.barh(machine_id, bar.end - bar.start, left=prev_end, height=1,label=f'Job {job.ID}', alpha=0.4)
