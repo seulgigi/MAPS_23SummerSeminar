@@ -11,7 +11,7 @@ class Schedule:
 
 class Bar:
     def __init__(self, job, setup: int):
-        self.seq = -1
+        self.seq = job.ID
         self.job = job
         self.machine = job.assignedMch
         self.start = job.start
@@ -19,4 +19,4 @@ class Bar:
         self.setup = setup
 
     def __repr__(self):
-        return 'Bar ' + str(self.job.ID)
+        return 'Bar ' + str(self.seq)
