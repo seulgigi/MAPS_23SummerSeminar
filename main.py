@@ -71,7 +71,7 @@ def scheduling(prob:Instance, alg:str) -> Schedule:
 
     if alg == 'EDD':  # 납기일이 빠른 순서대로 스케줄링
         sorted_job = sorted(prob.job_list, key=lambda j: j.due)
-        # 작업 종료 시간(납기일)을 기준으로 오름차순 정렬
+        # # 작업 종료 시간(납기일)을 기준으로 오름차순 정렬
 
         for j in sorted_job:
             selected_machine = min(prob.machine_list, key=lambda m: m.available)
@@ -79,18 +79,8 @@ def scheduling(prob:Instance, alg:str) -> Schedule:
 
             schedule_list[selected_machine.ID].append(match_job_bar(prob, selected_machine, j))
 
-    elif alg == 'SPT':
-        sorted_job = sorted(prob.job_list, key=lambda j: min(prob.getPTime(j, m) for m in prob.machine_list))
-        # process time이 짧은 순서대로 job 정렬
-
-        for j in sorted_job:
-            selected_machine = min(prob.machine_list, key=lambda m: prob.getPTime(j, m))
-
-            schedule_list[selected_machine.ID].append(match_job_bar(prob, selected_machine, j))
-
-
     print('Scheduling is done.')
-    return Schedule(alg, prob, schedule_list)
+    return Schedule('EDD', prob, schedule_list)
 
 def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
     job_setup = 0
@@ -117,5 +107,5 @@ def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
 
 if __name__ == '__main__':
     test_instance = generate_prob(numJob=10, numMch=5)
-    schedule = scheduling(test_instance, 'SPT')
+    schedule = scheduling(test_instance, 'EDD')
     schedule.print_schedule()
