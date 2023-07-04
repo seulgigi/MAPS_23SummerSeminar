@@ -90,16 +90,12 @@ def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
         job_setup = prob.getSetup(machine.assigned[-1], job, machine)
         job.start = machine.available + job_setup
         # selected_machine에 이전 작업에서 현재 작업으로의 setuptime을 더함
-
     job.end = job.start + prob.getPTime(job, machine)
     # 작업 종료 시간 설정
-
     job.assignedMch = machine.ID
     # job 지정된 machine의 번호 저장
-
     machine.available = job.end
     # 기계의 다음 작업 시작 시간
-
     machine.assigned.append(job)
     # 기계에 할당된 작업 추가
 
