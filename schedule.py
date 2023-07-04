@@ -1,22 +1,17 @@
 class Schedule:
-    def __init__(self, _alg: str, instance, schedule_list: list):
+    def __init__(self, _alg: str):
         self.algorithm = _alg
-        self.instance = instance
-        self.schedule = schedule_list
-
-    def print_schedule(self):
-        for m in self.schedule:
-            print(m)
+        self.instance
+        self.schedule = []
 
 
 class Bar:
-    def __init__(self, job, setup: int):
-        self.seq = -1
-        self.job = job
-        self.machine = job.assignedMch
-        self.start = job.start
-        self.end = job.end
-        self.setup = setup
+    def __init__(self):
+        self.seq
+        self.job
+        self.machine
+        self.start
+        self.end
+        self.setup
 
-    def __repr__(self):
-        return 'Bar ' + str(self.job.ID)
+# 연습중
