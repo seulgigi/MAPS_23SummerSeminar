@@ -2,6 +2,7 @@ import random
 from schedule import Schedule, Bar
 import matplotlib.pyplot as plt
 
+
 class Job:
     type = 'Unrelated PMSP with SDST'  # class variable shared by all instances
 
@@ -92,6 +93,7 @@ def scheduling(prob:Instance, alg:str) -> Schedule:
     print('Scheduling is done.')
     return Schedule('SPT', prob, schedule_list)
 
+
 def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
     job_setup = 0
     if len(machine.assigned) == 0:
@@ -151,5 +153,5 @@ def draw_gantt_chart(schedule: Schedule, prob: Instance):
 if __name__ == '__main__':
     test_instance = generate_prob(numJob=10, numMch=5)
     schedule = scheduling(test_instance, 'SPT')
-    schedule.print_schedule()
     draw_gantt_chart(schedule, test_instance)
+

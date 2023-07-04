@@ -19,4 +19,5 @@ class Bar:
         self.setup = setup
 
     def __repr__(self):
+
         return 'Bar ' + str(self.seq)
