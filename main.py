@@ -2,7 +2,6 @@ import random
 from schedule import Schedule, Bar
 import matplotlib.pyplot as plt
 
-
 class Job:
     type = 'Unrelated PMSP with SDST'  # class variable shared by all instances
 
@@ -82,17 +81,47 @@ def scheduling(prob:Instance, alg:str) -> Schedule:
             schedule_list[selected_machine.ID].append(match_job_bar(prob, selected_machine, j))
 
     elif alg == 'SPT':
-        sorted_job = sorted(prob.job_list, key=lambda j: min(prob.getPTime(j, m) for m in prob.machine_list))
-        # process time이 짧은 순서대로 job 정렬
+        schedule_list = solve_SPT(schedule_list, prob)
 
-        for j in sorted_job:
-            selected_machine = min(prob.machine_list, key=lambda m: prob.getPTime(j, m))
-
-            schedule_list[selected_machine.ID].append(match_job_bar(prob, selected_machine, j))
 
     print('Scheduling is done.')
     return Schedule('SPT', prob, schedule_list)
 
+def solve_SPT(schedule_list: list, prob: Instance) -> list:
+    sorted_job = []
+    first_job_list = []
+    count = 0
+
+    for m in prob.machine_list:
+        sorted_job.append(sorted(prob.job_list, key=lambda j: prob.getPTime(j, m)))
+        first_job_list.append(sorted_job[m.ID][0])
+
+    print(first_job_list)
+
+    while len(set(first_job_list)) <= prob.numMch - 1:
+        count += 1
+        duplicate_job = list(set([x for x in first_job_list if first_job_list.count(x) > 1]))
+        for j in duplicate_job:
+            duplicate_machine = [m for i, m in enumerate(prob.machine_list) if i in [j for j, job in enumerate(first_job_list) if job in duplicate_job]]
+            min_machine = min(duplicate_machine, key=lambda m: prob.getPTime(j, m))
+            for m in duplicate_machine:
+                if m != min_machine:
+                    first_job_list[m.ID] = sorted_job[m.ID][count]
+            print(first_job_list)
+
+    for m, j in zip(prob.machine_list, first_job_list):
+        schedule_list[m.ID].append(match_job_bar(prob, m, j))
+
+    while True:
+        selected_machine = min(prob.machine_list, key=lambda m: m.available)
+        for j in sorted_job[selected_machine.ID]:
+            if j.complete == False:
+                schedule_list[selected_machine.ID].append(match_job_bar(prob, selected_machine, j))
+                break
+
+        if all(j.complete for j in prob.job_list):
+            break
+    return schedule_list
 
 def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
     job_setup = 0
@@ -108,6 +137,8 @@ def match_job_bar(prob: Instance, machine: Machine, job: Job) -> Bar:
 
     job.assignedMch = machine.ID
     # job 지정된 machine의 번호 저장
+
+    job.complete = True
 
     machine.available = job.end
     # 기계의 다음 작업 시작 시간
@@ -153,5 +184,5 @@ def draw_gantt_chart(schedule: Schedule, prob: Instance):
 if __name__ == '__main__':
     test_instance = generate_prob(numJob=10, numMch=5)
     schedule = scheduling(test_instance, 'SPT')
+    schedule.print_schedule()
     draw_gantt_chart(schedule, test_instance)
-
