@@ -5,112 +5,96 @@ from ortools.linear_solver import pywraplp
 def milp_scheduling(prob:Instance):
     SJ = range(0, prob.numJob)
     SM = range(0, prob.numMch)
-    H = 10000000
-    M = 10000000
+    M = 100000
+    M2 = 200000
     s = prob.setup
     p = prob.ptime
-    u = {(i, k): 1 for i in SJ for k in SM}
 
     model = Model(name='PMSP')
 
     # 결정변수
-    C_k = {k: model.continuous_var(lb=0, name='C_' + str(k)) for k in SM}
-    x_i = {i: model.continuous_var(lb=0, name='x_' + str(i)) for i in SJ}
+    C_i = {i: model.continuous_var(lb=0, name='C_' + str(i)) for i in SJ}
+    C_ik = {(i, k): model.continuous_var(lb=0, name='C_' + str(i) + '_' + str(k)) for i in SJ for k in SM}
+    S_ik = {(i, k): model.continuous_var(lb=0, name='S_' + str(i) + '_' + str(k)) for i in SJ for k in SM}
     y_ik = {(i, k): model.binary_var(name='y_' + str(i) + '_' + str(k)) for i in SJ for k in SM}
-    z_ijk = {(i, j, k): model.binary_var(name='z_' + str(i) + '_' + str(j) + '_' + str(k)) for i in SJ for j in SJ for k in SM}
+    z_ijk = {(i, j, k): model.binary_var(name='z_' + str(i) + '_' + str(j) + '_' + str(k)) for i in SJ for j in SJ for k
+             in SM if i < j}
 
-    constraint_2 = {(i, j): model.add_constraint(
-        ct=model.sum(model.sum(p[k][i]*y_ik[i, k]+s[k][h][i] * z_ijk[h, i, k] for h in SJ) for k in SM) + x_i[i] <= x_i[j] + M*(1-model.sum(z_ijk[i, j, k] for k in SM)),
-        ctname="constraint_2_{0}_{1}".format(i, j)) for i in SJ for j in SJ if i != j}
+    constraint_1 = {(i, k): model.add_constraint(
+        ct=C_ik[i, k] + S_ik[i, k] <= M * y_ik[i, k],
+        ctname="constraint_1_{0}_{1}".format(i, k)) for i in SJ for k in SM}
 
-    constraint_3 = {(i, k): model.add_constraint(
-        ct=model.sum(s[k][h][i] * z_ijk[h, i, k] for h in SJ) + p[k][i] * y_ik[i, k] + x_i[i] <= C_k[k] + M*(1-y_ik[i, k]),
-        ctname="constraint_3_{0}_{1}".format(i, k)) for i in SJ for k in SM}
+    constraint_2 = {(i, k): model.add_constraint(
+        ct=C_ik[i, k] >= S_ik[i, k] + p[k][i] - M * (1 - y_ik[i, k]),
+        ctname="constraint_2_{0}_{1}".format(i, k)) for i in SJ for k in SM}
 
-    constraint_4 = {(i): model.add_constraint(
-        ct=model.sum(u[i, k] * y_ik[i, k] for k in SM) == 1,
-        ctname="constraint_4_{0}".format(i)) for i in SJ}
+    constraint_3 = {(i, j, k): model.add_constraint(
+        ct=S_ik[i, k] >= C_ik[j, k] + s[k][j][i]*y_ik[j, k] - M2*z_ijk[i, j, k],
+        ctname="constraint_3_{0}_{1}_{2}".format(i, j, k)) for k in SM for i in SJ for j in SJ if i < j}
+
+    constraint_4 = {(i, j, k): model.add_constraint(
+        ct=S_ik[j, k] >= C_ik[i, k] + s[k][i][j]*y_ik[i, k] - M2*(1 - z_ijk[i, j, k]),
+        ctname="constraint_4_{0}_{1}_{2}".format(i, j, k)) for k in SM for i in SJ for j in SJ if i < j}
 
     constraint_5 = {(i): model.add_constraint(
         ct=model.sum(y_ik[i, k] for k in SM) == 1,
         ctname="constraint_5_{0}".format(i)) for i in SJ}
 
-    constraint_6 = {(k): model.add_constraint(
-        ct=model.sum(z_ijk[i, i, k] for i in SJ) <= 1,
-        ctname="constraint_6_{0}".format(k)) for k in SM}
+    constraint_6 = {(i): model.add_constraint(
+        ct=model.sum(C_ik[i, k] for k in SM) <= C_i[i],
+        ctname="constraint_6_{0}".format(i)) for i in SJ}
 
-    constraint_7 = {(i, k): model.add_constraint(
-        ct=model.sum(z_ijk[j, i, k] for j in SJ) == y_ik[i, k],
-        ctname="constraint_7_{0}_{1}".format(i, k)) for i in SJ for k in SM}
+    # 목적함수
+    model.minimize(model.sum(C_i[i] for i in SJ))
 
-    constraint_8 = {(i, k): model.add_constraint(
-        ct=model.sum(z_ijk[i, j, k] for j in SJ if i != j) <= y_ik[i, k],
-        ctname="constraint_8_{0}_{1}".format(i, k)) for i in SJ for k in SM}
-
-    # Redundant
-    constraint_9 = {(i): model.add_constraint(
-        ct=x_i[i] >= 0,
-        ctname="constraint_9_{0}".format(i)) for i in SJ}
-
-    # Redundant
-    constraint_10 = {(k): model.add_constraint(
-        ct=C_k[k] <= H,
-        ctname="constraint_10_{0}".format(k)) for k in SM}
-
-    # 목적함수 (1)
-    model.minimize(model.sum(C_k[k] for k in SM))
-
-    model.set_time_limit(500)
+    # model.set_time_limit(500)
     result = model.solve(log_output=True)
+    print('Objective Value - '+ str(result.objective_value))
+    for i in SJ:
+        print("job {0} ends at {1}".format(i, result.get_value(C_i[i])))
+        for k in SM:
+            if result.get_value(y_ik[i, k]) > 0:
+                print("\t at machine {0} starts from {1} to {2} with p = {3}".format(k, result.get_value(S_ik[i, k]), result.get_value(C_ik[i, k]) , p[k][i]))
+                # milp_bars[k].append(match_job_bar(prob, )
 
-    print('Scheduling is done.')
+    #위의 결과를 스케줄에 할당하여 저장
+    schedule_list = [[] for _ in range(prob.numMch)]
+    for i in SJ:
+        for k in SM:
+            if int(y_ik[i, k]) == 1 :
+                schedule_list[k].append(i)
+    return Schedule('SPT', prob, schedule_list)
+
+
+    ## 할거 간트차트 그리는 것과 연결
 
 
 def milp_scheduling_ortools(prob:Instance):
     solver = pywraplp.Solver.CreateSolver('SCIP')
 
-    due_dates = prob.job_list[:].due
-    proc_times = prob.ptime
-    intervals = []
-    start_variables = []
-    end_variables = []
-    early_variables = []
-    tardy_variables = []
-    total_tardiness = []
-
-    num_jobs = prob.numJob
-
+    SJ = range(0, prob.numJob)
+    SM = range(0, prob.numMch)
+    M = 100000
+    M2 = 200000
+    s = prob.setup
+    p = prob.ptime
     infinity = solver.infinity()
-    X = []
-    C = []
-    T = []
-    for i in range(num_jobs):
-        x_temp = []
-        ### 여기까지 해결
-        for j in range(num_jobs):
-            x_temp.append(solver.IntVar(0.0, 1.0, 'X_' + str(i + 1) + '_' + str(j + 1)))
-        X.append(x_temp)
-        C.append(solver.NumVar(0, infinity, 'C_' + str(i + 1)))
-        T.append(solver.NumVar(0, infinity, 'T_' + str(i + 1)))
 
-    # Add Constraints Here
-    for i in range(num_jobs):
-        for j in range(num_jobs):
-            if i is not j:
-                solver.Add(X[i][j] + X[j][i] == 1)
+    C_i= {i: solver.NumVar(0, infinity, 'C_' + str(i)) for i in SJ}
+    C_ik ={(i,k): solver.NumVar(0, infinity, 'C_' + str(i) + '_' + str(k)) for i in SJ for k in SM}
+    S_ik ={(i,k): solver.NumVar(0, infinity, 'S_' + str(i) + '_' + str(k)) for i in SJ for k in SM}
+    y_ik ={(i,k): solver.IntVar(0, 1, 'y_' + str(i) + '_' + str(k)) for i in SJ for k in SM}
+    z_ijk ={(i,j,k) : solver.IntVar(0, 1, 'z_' + str(i) + '_' + str(j) + '_' + str(k)) for i in SJ for j in SJ for k in SM}
 
-    for i in range(num_jobs):
-        solver.Add(C[i] >= proc_times[i])
+    # Add Constraints
+    constraint_1 = {(i,k) : solver.Add(C_ik[i,k] + S_ik[i,k] <= M * y_ik[i,k]) for i in SJ for k in SM }
+    constraint_2 = {(i,k) : solver.Add(C_ik[i,k] >= S_ik[i,k] + p[k][i] - M * (1 - y_ik[i,k])) for i in SJ for k in SM }
+    constraint_3 = {(i,j,k) : solver.Add(S_ik[i,k] >= C_ik[j,k] + s[k][j][i] * y_ik[j,k] - M2 * z_ijk[i,j,k]) for k in SM for i in SJ for j in SJ if i < j}
+    constraint_4 = {(i,j,k) : solver.Add(S_ik[j,k] >= C_ik[i,k] + s[k][i][j] * y_ik[i,k] - M2 * (1 - z_ijk[i,j,k])) for k in SM for i in SJ for j in SJ if i < j}
+    constraint_5 = {(i) : solver.Add(solver.Sum(y_ik[i,k] for k in SM) == 1) for i in SJ}
+    constraint_6 = {(i) : solver.Add(solver.Sum(C_ik[i,k] for k in SM) <= C_i[i]) for i in SJ}
 
-    for i in range(num_jobs):
-        for j in range(num_jobs):
-            if i is not j:
-                solver.Add(C[i] - C[j] + X[i][j] * 10000 >= proc_times[i])
-
-    for i in range(num_jobs):
-        solver.Add(T[i] >= C[i] - due_dates[i])
-
-    solver.Minimize(sum(T))
+    solver.Minimize(sum(C_i[i] for i in SJ))
     solver.EnableOutput()
     status = solver.Solve()
 
