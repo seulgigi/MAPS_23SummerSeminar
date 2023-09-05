@@ -1,15 +1,21 @@
 from module import *
 from docplex.mp.model import Model
 from ortools.linear_solver import pywraplp
-
+from heuristic import *
+import pickle
+import numpy as np
 def milp_scheduling(prob:Instance):
+
     SJ = range(0, prob.numJob)
     SM = range(0, prob.numMch)
-    M = 100000
-    M2 = 200000
     s = prob.setup
     p = prob.ptime
-
+    M = 0
+    max_s = np.array(s).max()
+    for i in SJ:
+        M = M + max([row[i] for row in p])
+        M = M + max_s
+    M2 = M + max_s
     model = Model(name='PMSP')
 
     # 결정변수
@@ -46,38 +52,45 @@ def milp_scheduling(prob:Instance):
 
     # 목적함수
     model.minimize(model.sum(C_i[i] for i in SJ))
-
-    # model.set_time_limit(500)
+    model.set_time_limit(3600)
     result = model.solve(log_output=True)
-    print('Objective Value - '+ str(result.objective_value))
-    for i in SJ:
-        print("job {0} ends at {1}".format(i, result.get_value(C_i[i])))
-        for k in SM:
-            if result.get_value(y_ik[i, k]) > 0:
-                print("\t at machine {0} starts from {1} to {2} with p = {3}".format(k, result.get_value(S_ik[i, k]), result.get_value(C_ik[i, k]) , p[k][i]))
-                # milp_bars[k].append(match_job_bar(prob, )
+    return result
+    # if "FEASIBLE" in result.solve_status.name:
+    #     return result
+    # elif "OPTIMAL" in result.solve_status.name:
+    #     return result
+    # else:
+    #     return result
 
-    #위의 결과를 스케줄에 할당하여 저장
-    schedule_list = [[] for _ in range(prob.numMch)]
+    """print('Objective Value - '+ str(result.objective_value))
+        for i in SJ:
+            print("job {0} ends at {1}".format(i, result.get_value(C_i[i])))
+            for k in SM:
+                if result.get_value(y_ik[i, k]) > 0:
+                    print("\t at machine {0} starts from {1} to {2} with p = {3}".format(k, result.get_value(S_ik[i, k]), result.get_value(C_ik[i, k]) , p[k][i]))
+                    # milp_bars[k].append(match_job_bar(prob, )"""
+
+    """#위의 결과를 스케줄에 할당하여 저장
+    schedule_list = [[] for i in range(prob.numMch)]
     for i in SJ:
         for k in SM:
             if int(y_ik[i, k]) == 1 :
                 schedule_list[k].append(i)
-    return Schedule('SPT', prob, schedule_list)
-
-
-    ## 할거 간트차트 그리는 것과 연결
+    return Schedule('milp', prob, schedule_list)"""
 
 
 def milp_scheduling_ortools(prob:Instance):
     solver = pywraplp.Solver.CreateSolver('SCIP')
-
     SJ = range(0, prob.numJob)
     SM = range(0, prob.numMch)
-    M = 100000
-    M2 = 200000
     s = prob.setup
     p = prob.ptime
+    M = 0
+    max_s = np.array(s).max()
+    for i in SJ:
+        M = M + max([row[i] for row in p])
+        M = M + max_s
+    M2 = M + max_s
     infinity = solver.infinity()
 
     C_i= {i: solver.NumVar(0, infinity, 'C_' + str(i)) for i in SJ}
@@ -94,10 +107,23 @@ def milp_scheduling_ortools(prob:Instance):
     constraint_5 = {(i) : solver.Add(solver.Sum(y_ik[i,k] for k in SM) == 1) for i in SJ}
     constraint_6 = {(i) : solver.Add(solver.Sum(C_ik[i,k] for k in SM) <= C_i[i]) for i in SJ}
 
-    solver.Minimize(sum(C_i[i] for i in SJ))
+    solver.Minimize(sum([C_i[i] for i in SJ]))
+    solver.set_time_limit(3600*1000)
     solver.EnableOutput()
     status = solver.Solve()
 
+
+    global fo
     if status == pywraplp.Solver.OPTIMAL:
+        fo = pywraplp.Solver.OPTIMAL
         print('Solution:')
         print('Objective value =', solver.Objective().Value())
+        return solver
+    elif status == pywraplp.Solver.FEASIBLE:
+        fo = pywraplp.Solver.FEASIBLE
+        print('Solution:')
+        print('Objective value =', solver.Objective().Value())
+        return solver
+    else:
+        print("답이 없습니다.")
+        return solver

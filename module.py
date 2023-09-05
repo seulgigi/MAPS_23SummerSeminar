@@ -15,6 +15,12 @@ class Job:
     def __repr__(self):
         return 'Job ' + str(self.ID)
 
+    def __eq__(self, other):
+        if isinstance(other, Job):
+            if (other.ID== self.ID) and (other.due== self.due):
+                return True
+        return False
+#TODO 어떻게 코드를 쓰는 것인지는 모르겠습니다.
 
 class Machine:
     type = 'Unrelated PMSP with SDST'
@@ -103,6 +109,8 @@ def draw_gantt_chart(schedule: Schedule, prob: Instance):
     plt.show()
 
 def generate_prob(numJob, numMch) -> Instance:
+    H = 1000  # 임의로 설정 하였지만 나중에 받아오는 형식
+    pmax = H/(numJob/numMch)
     job_list = []
     machine_list = []
     jobs = [*range(0, numJob)]
@@ -110,14 +118,14 @@ def generate_prob(numJob, numMch) -> Instance:
 
     job_list += [Job(i) for i in jobs]
     machine_list += [Machine(i) for i in machines]
-    ptimes = [[random.randint(10, 40) for j in jobs] for m in machines]
+    ptimes = [[random.randint(round(pmax*0.6), round(pmax)) for j in jobs] for m in machines]
     setup_matrix = [*range(0, numMch)]
     for m in machines:
         for j in jobs:
             job_list[j].due = random.randint(10, 40)
             for j in jobs:
-                setup_matrix[m] = [[random.randint(6, 15) for j in jobs] for j in jobs]
-
+                setup_matrix[m] = [[random.randint(round(0.05*ptimes[m][j]*2), round(0.1*ptimes[m][j]*2)) for j in jobs] for j in jobs]
+    # random.uniform(0.5,1.5)
     return Instance(job_list, machine_list, ptimes, setup_matrix)
 
 
