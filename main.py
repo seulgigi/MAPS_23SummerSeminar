@@ -1,4 +1,4 @@
-from pulp import pulp
+from pulp import pulp, LpStatusOptimal, LpStatus
 
 from module import *
 from milp import *
@@ -10,7 +10,7 @@ import multiprocessing
 import pickle
 import pandas as pd
 
-from pp import pulp_scheduling, pp_scheduling_ortools
+from pp import pulp_scheduling
 
 
 def test1():
@@ -126,36 +126,6 @@ def test4():
     return total
 
 def test5():
-    fo = -1
-    load_time = []
-    object = []
-    sol_status = []
-    total = {}
-    c = 0
-    for i in range(3):
-        start_time = time.time()
-        filename = "problem{}.pickle".format(i + 1)
-        with open(filename, mode='rb') as fr:
-            test_instance = pickle.load(fr)
-            values = pp_scheduling_ortools(test_instance)
-        end_time = time.time()
-        loading_time = end_time - start_time
-        if values[1] == pulp.LpStatusOptimal:
-            load_time.append(loading_time)
-            object.append(pulp.value(values.objective))
-            c+=1
-            sol_status.append(values[1])
-    total[time] = load_time
-    total[value] = object
-    total[count] = c
-    total["answer"] = sol_status
-    savething = {"object_value": total[value], "time": total[time], "status": total["answer"]}
-    with open('pp_scheduling_ortools_answer{}.pickle'.format(c), mode='wb') as fw:
-        pickle.dump(savething, fw)
-    return total
-
-def test6():
-    fo = -1
     load_time = []
     object = []
     sol_status = []
@@ -169,17 +139,17 @@ def test6():
             values = pulp_scheduling(test_instance)
         end_time = time.time()
         loading_time = end_time - start_time
-        if values.status == pulp.LpStatusOptimal:
+        if values != None:
             load_time.append(loading_time)
-            object.append(pulp.value(values.objective))
-            c += 1
-            sol_status.append(pulp.LpStatus[values.status])
+            # object.append(values)
+            sol_status.append(values)
+        c += 1
     total[time] = load_time
     total[value] = object
-    total[count] = c
+    total["num"] = c
     total["answer"] = sol_status
-    savething = {"object_value": total[value], "time": total[time], "status": total["answer"]}
-    with open('cp_scheduling_answer{}.pickle'.format(c), mode='wb') as fw:
+    savething = {"num_prob": total["num"], "object_value": total[value], "time": total[time], "status": total["answer"]}
+    with open('pulp_scheduling_answer{}.pickle'.format(c), mode='wb') as fw:
         pickle.dump(savething, fw)
     return total
 
