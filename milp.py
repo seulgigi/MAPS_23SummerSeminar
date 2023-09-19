@@ -113,14 +113,12 @@ def milp_scheduling_ortools(prob:Instance):
     status = solver.Solve()
 
 
-    global fo
+
     if status == pywraplp.Solver.OPTIMAL:
-        fo = pywraplp.Solver.OPTIMAL
         print('Solution:')
         print('Objective value =', solver.Objective().Value())
         return solver
     elif status == pywraplp.Solver.FEASIBLE:
-        fo = pywraplp.Solver.FEASIBLE
         print('Solution:')
         print('Objective value =', solver.Objective().Value())
         return solver
