@@ -131,6 +131,36 @@ def test5():
     sol_status = []
     total = {}
     c = 0
+    for i in range(2):
+        start_time = time.time()
+        filename = "problem{}.pickle".format(i + 1)
+        with open(filename, mode='rb') as fr:
+            test_instance = pickle.load(fr)
+            values = gurobi_milp(test_instance)
+        end_time = time.time()
+        loading_time = end_time - start_time
+        if values != None:
+            load_time.append(loading_time)
+            object.append(values.ObjVal)
+            sol_status.append(values.status)
+        c += 1
+    total[time] = load_time
+    total[value] = object
+    total["num"] = c
+    total["answer"] = sol_status
+    savething = {"num_prob": total["num"], "object_value": total[value], "time": total[time],
+                 "status": total["answer"]}
+    with open('gurobi_milp_answer{}.pickle'.format(c), mode='wb') as fw:
+        pickle.dump(savething, fw)
+    return total
+
+
+def test6():
+    load_time = []
+    object = []
+    sol_status = []
+    total = {}
+    c = 0
     for i in range(3):
         start_time = time.time()
         filename = "problem{}.pickle".format(i + 1)
@@ -155,10 +185,10 @@ def test5():
 
 
 if __name__ == '__main__':
-    cp_or = test1()
+    """cp_or = test1()
     cp = test2()
     milp_or = test3()
-    milp = test4()
+    milp = test4()"""
 
 
 
