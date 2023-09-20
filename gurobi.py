@@ -44,7 +44,7 @@ def gurobi_milp(prob:Instance, opt_model=None):
 
     opt_model.ModelSense = grb.GRB.MINIMIZE
     opt_model.setObjective(objective)
-    opt_model.setParam('TimeLimit', 10)
+    opt_model.setParam('TimeLimit', 3600)
     opt_model.optimize()
 
     return opt_model

@@ -47,8 +47,6 @@ def pulp_scheduling(prob:Instance):
         model += pl.lpSum(C_ik[i, k] for k in SM) <= C_i[i], f"constraint_6_{i}"
 
     model += pl.lpSum(C_i[i] for i in SJ)
-    solver = pl.getSolver('PULP_CBC_CMD', timeLimit=10)
-
+    solver = pl.getSolver('PULP_CBC_CMD', timeLimit=30)
     result = model.solve(solver)
-
-    return result
+    return model

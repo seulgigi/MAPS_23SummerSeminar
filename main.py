@@ -1,5 +1,4 @@
 from pulp import pulp, LpStatusOptimal, LpStatus
-
 from module import *
 from milp import *
 from cp import *
@@ -19,9 +18,9 @@ def test1():
     sol_status = []
     total = {}
     c = 0
-    for i in range(32):
+    for i in range(30):
         start_time = time.time()
-        filename = "problem{}.pickle".format(i + 1)
+        filename = "problem_M{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
             test_instance = pickle.load(fr)
             values = cp_scheduling_ortools(test_instance)
@@ -37,7 +36,7 @@ def test1():
     total[count] = c
     total["answer"] = sol_status
     savething = {"object_value": total[value], "time": total[time], "status": total["answer"]}
-    with open('cp_scheduling_ortools_answer{}.pickle'.format(c), mode='wb') as fw:
+    with open('cp_scheduling_ortools_answer_M{}.pickle'.format(c), mode='wb') as fw:
         pickle.dump(savething, fw)
     return total
 def test2():
@@ -46,9 +45,9 @@ def test2():
     sol_status = []
     total = {}
     c = 0
-    for i in range(32):
+    for i in range(30):
         start_time = time.time()
-        filename = "problem{}.pickle".format(i + 1)
+        filename = "problem_M{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
             test_instance = pickle.load(fr)
             values = cp_scheduling(test_instance)
@@ -64,7 +63,7 @@ def test2():
     total[count] = c
     total["answer"] = sol_status
     savething = {"object_value": total[value], "time": total[time], "status": total["answer"]}
-    with open('cp_scheduling_answer{}.pickle'.format(c), mode='wb') as fw:
+    with open('cp_scheduling_answer_M{}.pickle'.format(c), mode='wb') as fw:
         pickle.dump(savething, fw)
     return total
 def test3():
@@ -75,10 +74,9 @@ def test3():
     sol_status = []
     total = {}
     c=0
-    for i in range(32):
-        fo = -1 # 상태를 확인하기위한 변수
+    for i in range(30):
         start_time = time.time()
-        filename = "problem{}.pickle".format(i + 1)
+        filename = "problem_M{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
             test_instance = pickle.load(fr)
             values = milp_scheduling_ortools(test_instance)
@@ -94,7 +92,7 @@ def test3():
     total["num"] = c
     total["answer"] = sol_status
     savething = {"num_prob": total["num"], "object_value": total[value], "time": total[time],"status":total["answer"]}
-    with open('milp_scheduling_ortools_answer{}.pickle'.format(c), mode='wb') as fw:
+    with open('milp_scheduling_ortools_answer_M{}.pickle'.format(c), mode='wb') as fw:
         pickle.dump(savething, fw)
     return total
 def test4():
@@ -103,9 +101,9 @@ def test4():
     sol_status = []
     total = {}
     c = 0
-    for i in range(32):
+    for i in range(30):
         start_time = time.time()
-        filename = "problem{}.pickle".format(i + 1)
+        filename = "problem_M{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
             test_instance = pickle.load(fr)
             values = milp_scheduling(test_instance)
@@ -121,7 +119,7 @@ def test4():
     total["num"] = c
     total["answer"] = sol_status
     savething = {"num_prob": total["num"], "object_value": total[value], "time": total[time], "status": total["answer"]}
-    with open('milp_scheduling_answer{}.pickle'.format(c), mode='wb') as fw:
+    with open('milp_scheduling_answer_M{}.pickle'.format(c), mode='wb') as fw:
         pickle.dump(savething, fw)
     return total
 
@@ -131,9 +129,9 @@ def test5():
     sol_status = []
     total = {}
     c = 0
-    for i in range(2):
+    for i in range(30):
         start_time = time.time()
-        filename = "problem{}.pickle".format(i + 1)
+        filename = "problem_M{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
             test_instance = pickle.load(fr)
             values = gurobi_milp(test_instance)
@@ -150,12 +148,13 @@ def test5():
     total["answer"] = sol_status
     savething = {"num_prob": total["num"], "object_value": total[value], "time": total[time],
                  "status": total["answer"]}
-    with open('gurobi_milp_answer{}.pickle'.format(c), mode='wb') as fw:
+    with open('gurobi_milp_answer_M{}.pickle'.format(c), mode='wb') as fw:
         pickle.dump(savething, fw)
     return total
 
 
 def test6():
+    # 1 = optimap , -1 = Infeasible , 0 = feasible, -2 = unbounded , -3 = 문제정의 x
     load_time = []
     object = []
     sol_status = []
@@ -171,8 +170,8 @@ def test6():
         loading_time = end_time - start_time
         if values != None:
             load_time.append(loading_time)
-            # object.append(values)
-            sol_status.append(values)
+            object.append(pulp.value(values.objective))
+            sol_status.append(values.status)
         c += 1
     total[time] = load_time
     total[value] = object
@@ -185,11 +184,12 @@ def test6():
 
 
 if __name__ == '__main__':
-    """cp_or = test1()
+    cp_or = test1()
     cp = test2()
     milp_or = test3()
-    milp = test4()"""
-
+    milp = test4()
+    goruby = test5()
+    pulp = test6()
 
 
     #test_instance = generate_prob(numJob=3, numMch=2)
