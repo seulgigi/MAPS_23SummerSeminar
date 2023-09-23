@@ -132,6 +132,7 @@ def test5():
     total = {}
     c = 0
     for i in range(3):
+        values = 0
         start_time = time.time()
         filename = "problem{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
@@ -141,8 +142,11 @@ def test5():
         loading_time = end_time - start_time
         if values != None:
             load_time.append(loading_time)
-            # object.append(values)
-            sol_status.append(values)
+            object.append(values)
+            if values == 1 :
+                sol_status.append('FEASIBLE')
+            else :
+                sol_status.append('FALSE')
         c += 1
     total[time] = load_time
     total[value] = object
