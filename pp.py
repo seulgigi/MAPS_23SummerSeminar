@@ -1,79 +1,52 @@
+import numpy as np
 from pulp import LpProblem, LpMinimize, LpBinary, LpInteger, LpConstraint
 
 from module import *
-from docplex.cp.model import *
 import pulp as pl
 
 
 def pulp_scheduling(prob:Instance):
-    nbrOfJobs = prob.numJob
-    jobs = [*range(0, nbrOfJobs)]
-    nbrOfMachines = prob.numMch
-    machines = [*range(0, nbrOfMachines)]
-    processingTimes = prob.ptime
-    setup_matrix = prob.setup
+    SJ = range(0, prob.numJob)
+    SM = range(0, prob.numMch)
+    s = prob.setup
+    p = prob.ptime
+    M = 0
+    max_s = np.array(s).max()
+    for i in SJ:
+        M = M + max([row[i] for row in p])
+        M = M + max_s
+    M2 = M + max_s
+    model = LpProblem("pulp_model", LpMinimize)
 
-    mdl = LpProblem("pulp_model", LpMinimize)
+    # 결정변수
+    C_i = {i: pl.LpVariable(name=f'C_{i}', lowBound=0, cat=pl.LpContinuous) for i in SJ}
+    C_ik = {(i, k): pl.LpVariable(name=('C_' + str(i) + '_' + str(k)), lowBound=0, cat=pl.LpContinuous) for i in SJ for k in SM}
+    S_ik = {(i, k): pl.LpVariable(name=('S_' + str(i) + '_' + str(k)), lowBound=0, cat=pl.LpContinuous) for i in SJ for k in SM}
+    y_ik = {(i, k): pl.LpVariable(name=('Y_' + str(i) + '_' + str(k)), lowBound=0, cat=pl.LpBinary) for i in SJ for k in SM}
+    z_ijk = {(i, j, k): pl.LpVariable(name=('Z_' + str(i) + '_' + str(j) + '_' + str(k)), lowBound=0, cat=pl.LpBinary) for i in SJ for j in SJ for k
+             in SM if i < j}
 
-    processing_itv_vars = [[pl.LpVariable(f"interval_job{j}_machine{m}", cat=pl.LpContinuous, lowBound=0) for m in machines] for j in jobs]
-    for m in machines:
-        for j in jobs:
-            print(processing_itv_vars[j][m])
+    for i in SJ:
+        for k in SM:
+            model += C_ik[i, k] + S_ik[i, k] <= M * y_ik[i, k], f"constraint_1_{i}_{k}"
+            model += C_ik[i, k] >= S_ik[i, k] + p[k][i] - M * (1 - y_ik[i, k]), f"constraint_2_{i}_{k}"
 
-    objective = pl.lpSum([pl.lpSum(processing_itv_vars[j][m] for m in machines) for j in jobs])
-    mdl += objective, "Objective"
+    for i in SJ:
+        for j in SJ:
+            for k in SM:
+                if i < j:
+                    model += S_ik[i, k] >= C_ik[j, k] + s[k][j][i] * y_ik[j, k] - M2 * z_ijk[
+                        i, j, k], f"constraint_3_{i}_{j}_{k}"
+                    model += S_ik[j, k] >= C_ik[i, k] + s[k][i][j] * y_ik[i, k] - M2 * (
+                                1 - z_ijk[i, j, k]), f"constraint_4_{i}_{j}_{k}"
 
-    for j in jobs:
-        mdl += pl.lpSum(processing_itv_vars[j][m] for m in machines) == 1, "Job_{}".format(j)
+    for i in SJ:
+        model += pl.lpSum(y_ik[i, k] for k in SM) == 1, f"constraint_5_{i}"
 
-    sequence_vars = [pl.LpVariable("sequences_machine{}".format(m), lowBound=0, cat=pl.LpInteger) for m in machines]
+    for i in SJ:
+        model += pl.lpSum(C_ik[i, k] for k in SM) <= C_i[i], f"constraint_6_{i}"
 
-    for m in machines:
-        mdl += pl.lpSum(processing_itv_vars[j][m] * j for j in jobs) >= sequence_vars[m], "No_Overlap_{}".format(m)
-
-    mdl.solve()
-    if pl.LpStatus[mdl.status] == 'Optimal':
-        print("Solution:")
-        for j in jobs:
-            for m in machines:
-                if pl.value(processing_itv_vars[j][m]) == 1:
-                    print("Job {} is scheduled on Machine {}".format(j, m))
-    else:
-        print("No optimal solution found.")
-
-    return mdl
-
-
-
-def pp_scheduling_ortools(prob:Instance):
-    jobs = [*range(0, prob.numJob)]
-    machines = [*range(0, prob.numMch)]
-    setup_matrix = prob.setup
-    processingTimes = prob.ptime
-    H = 100000000000000
-
-    model = pl.LpProblem("pulp_model", pl.LpMinimize)
-    presence_vars = pl.LpVariable.dicts("presence", [(m, j) for m in machines for j in jobs], cat=pl.LpBinary)
-    start_vars = pl.LpVariable.dicts("start", [(m, j) for m in machines for j in jobs], lowBound=0, upBound=H, cat=pl.LpInteger)
-    end_vars = pl.LpVariable.dicts("end", [(m, j) for m in machines for j in jobs], lowBound=0, upBound=H, cat=pl.LpInteger)
-
-    for m in machines:
-        for j1 in jobs:
-            for j2 in jobs:
-                if j1 != j2:
-                    model += start_vars[(m, j2)] >= end_vars[(m, j1)] + setup_matrix[m][j1][j2] - H * (1 - presence_vars[(m, j1)]) - H * (1 - presence_vars[(m, j2)])
-
-    for j in jobs:
-        model += pl.lpSum(presence_vars[(m, j)] for m in machines) == 1
-
-    objective = pl.lpSum(end_vars[(m, j)] for m in machines for j in jobs)
-    model += objective
-
-    model.solve()
-
-    if pl.LpStatus[model.status] == "Optimal":
-        return [pl, "OPTIMAL"]
-    elif pl.LpStatus[model.status] == "Feasible":
-        return [pl, "FEASIBLE"]
-    else:
-        return [pl, "no"]
+    model += pl.lpSum(C_i[i] for i in SJ)
+    solver = pl.getSolver('PULP_CBC_CMD', timeLimit=30)
+    result = model.solve(solver)
+    return model

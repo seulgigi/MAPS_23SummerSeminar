@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : milp ortool 코드 추가">
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : gurobi 추가">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pulp_scheduling_answer3.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/pulp_scheduling_answer3.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gurobi.py" beforeDir="false" afterPath="$PROJECT_DIR$/gurobi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pp.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,6 +147,11 @@
         <item itemvalue="Python tests.Python tests for main.test3" />
         <item itemvalue="Python tests.Python tests for main.test1" />
         <item itemvalue="Python tests.Python tests in main.py" />
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.GA" />
+        <item itemvalue="Python.open_pickle" />
+        <item itemvalue="Python.실습용" />
+        <item itemvalue="Python.123" />
       </list>
     </recent_temporary>
   </component>
@@ -236,7 +243,15 @@
       <option name="project" value="LOCAL" />
       <updated>1689745809060</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Docs : gurobi 추가">
+      <option name="closed" value="true" />
+      <created>1695123424957</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1695123424957</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +298,8 @@
     <MESSAGE value="duetime 확인" />
     <MESSAGE value="간트차트" />
     <MESSAGE value="Docs : milp ortool 코드 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="Docs : milp ortool 코드 추가" />
+    <MESSAGE value="Docs : gurobi 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="Docs : gurobi 추가" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -297,21 +313,6 @@
           <url>file://$PROJECT_DIR$/open_pickle.py</url>
           <line>13</line>
           <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/heuristic.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/heuristic.py</url>
-          <line>28</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/heuristic.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/GA.py</url>
@@ -361,6 +362,7 @@
         <watch expression="schedule_list" />
         <watch expression="test" language="Python" />
         <watch expression="random_chrosome.schedule_list" />
+        <watch expression="total" />
       </configuration>
     </watches-manager>
   </component>
