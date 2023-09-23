@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : gurobi 추가">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gurobi.py" beforeDir="false" afterPath="$PROJECT_DIR$/gurobi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pp.py" beforeDir="false" afterPath="$PROJECT_DIR$/pp.py" afterDir="false" />
-    </list>
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : gurobi 추가" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -147,11 +142,6 @@
         <item itemvalue="Python tests.Python tests for main.test3" />
         <item itemvalue="Python tests.Python tests for main.test1" />
         <item itemvalue="Python tests.Python tests in main.py" />
-        <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.GA" />
-        <item itemvalue="Python.open_pickle" />
-        <item itemvalue="Python.실습용" />
-        <item itemvalue="Python.123" />
       </list>
     </recent_temporary>
   </component>
