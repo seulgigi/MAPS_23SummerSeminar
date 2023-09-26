@@ -8,6 +8,7 @@
       <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26__1_15__________.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26_오후_1_15,_업데이트_전에_커밋되지_않은_변경_내용_[변경]/shelved.patch" afterDir="false" />
     </list>
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : gurobi 추가" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -145,11 +146,6 @@
         <item itemvalue="Python tests.Python tests for main.test3" />
         <item itemvalue="Python tests.Python tests for main.test1" />
         <item itemvalue="Python tests.Python tests in main.py" />
-        <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.GA" />
-        <item itemvalue="Python.open_pickle" />
-        <item itemvalue="Python.실습용" />
-        <item itemvalue="Python.123" />
       </list>
     </recent_temporary>
   </component>
