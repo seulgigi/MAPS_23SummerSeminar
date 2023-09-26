@@ -1,4 +1,6 @@
 from pulp import pulp, LpStatusOptimal, LpStatus
+
+from gurobi import gurobi_milp
 from module import *
 from milp import *
 from cp import *
@@ -161,6 +163,7 @@ def test6():
     total = {}
     c = 0
     for i in range(3):
+        values = 0
         start_time = time.time()
         filename = "problem{}.pickle".format(i + 1)
         with open(filename, mode='rb') as fr:
@@ -171,7 +174,16 @@ def test6():
         if values != None:
             load_time.append(loading_time)
             object.append(pulp.value(values.objective))
-            sol_status.append(values.status)
+            if values.status == 1:
+                sol_status.append('OPTIMAP')
+            elif values.status == -1:
+                sol_status.append('INFEASIBLE')
+            elif values.status == 0:
+                sol_status.append('FEASIBLE')
+            elif values.status == -2:
+                sol_status.append('UNBOUNDED')
+            else:
+                sol_status.append('FALSE')
         c += 1
     total[time] = load_time
     total[value] = object
