@@ -62,31 +62,37 @@ def crossover_operator(population):
 
 
 if __name__ == '__main__':
-    with open("problem1.pickle", mode='rb') as fr:
-        test_instance = pickle.load(fr)
-    population = []
-    for i in range(3): # 반복되는 수만큼 유전자 생성
-        box = chrosome(test_instance)
-        box.schedule_list = box.sheduling()
-        box.total_time = box.add_totaltime()
-        population.append(box)
-        #population.append(generate_initial_population(test_instance))
-    population = sorted(population, key=lambda x: x.total_time)
+    for r in range(10):          # 한실험당 10번 진행
+        for k in range(10):     # generation
+            population = []
+            for o in range(100):
+                with open("problem1.pickle", mode='rb') as fr:
+                    test_instance = pickle.load(fr)
+                for i in range(3): # 반복되는 수만큼 유전자 생성
+                    box = chrosome(test_instance)
+                    box.schedule_list = box.sheduling()
+                    box.total_time = box.add_totaltime()
+                    population.append(box)
+                    #population.append(generate_initial_population(test_instance))
+                population = sorted(population, key=lambda x: x.total_time)
 
 
-    for i in range(3):  # 반복되는 수만큼 돌연변이 생성
-        random_chrosome = copy.deepcopy(population[random.sample(range(1, len(population)), 1)[0]])
-        random_chrosome.chrosome = random_chrosome.mutation()
-        random_chrosome.schedule_list = random_chrosome.sheduling()
-        random_chrosome.total_time = random_chrosome.add_totaltime()
-        population.append(random_chrosome)
+                for i in range(0):  # 반복되는 수만큼 돌연변이 생성
+                    random_chrosome = copy.deepcopy(population[random.sample(range(1, len(population)), 1)[0]])
+                    random_chrosome.chrosome = random_chrosome.mutation()
+                    random_chrosome.schedule_list = random_chrosome.sheduling()
+                    random_chrosome.total_time = random_chrosome.add_totaltime()
+                    population.append(random_chrosome)
 
-    population= sorted(population, key=lambda x: x.total_time)[:4]
+                population= sorted(population, key=lambda x: x.total_time)[:4]
 
-    for i in range(3):  # 반복되는 수만큼 유전자 조합하여 생성
-        crossed_chrosome = crossover_operator(population)
-        crossed_chrosome.schedule_list = crossed_chrosome.sheduling()
-        crossed_chrosome.total_time = crossed_chrosome.add_totaltime()
-        population.append(crossed_chrosome)
-    population= sorted(population, key=lambda x: x.total_time)[:4]
+                for i in range(0):  # 반복되는 수만큼 유전자 조합하여 생성
+                    crossed_chrosome = crossover_operator(population)
+                    crossed_chrosome.schedule_list = crossed_chrosome.sheduling()
+                    crossed_chrosome.total_time = crossed_chrosome.add_totaltime()
+                    population.append(crossed_chrosome)
+                population= sorted(population, key=lambda x: x.total_time)[:4]
+
+            with open('GA_answer(10:100)_{}.pickle'.format(o+1), mode='wb') as fw:
+                pickle.dump(population, fw)
 
