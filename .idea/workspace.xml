@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : gurobi 추가">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/GA.py" afterDir="false" />
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="fix : ga반복문 추가">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26__1_15__________.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26_오후_1_15,_업데이트_전에_커밋되지_않은_변경_내용_[변경]/shelved.patch" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +22,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -258,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695123424957</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="fix : ga반복문 추가">
+      <option name="closed" value="true" />
+      <created>1695702271781</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1695702271781</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -303,7 +310,8 @@
     <MESSAGE value="간트차트" />
     <MESSAGE value="Docs : milp ortool 코드 추가" />
     <MESSAGE value="Docs : gurobi 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="Docs : gurobi 추가" />
+    <MESSAGE value="fix : ga반복문 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : ga반복문 추가" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
