@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="fix : ga반복문 추가">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26__1_15__________.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26_오후_1_15,_업데이트_전에_커밋되지_않은_변경_내용_[변경]/shelved.patch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/GA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test Results - .html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/open_pickle.py" beforeDir="false" afterPath="$PROJECT_DIR$/open_pickle.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,21 +42,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/cjf46/PycharmProjects/PMSP_MAPS_23Summer&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/cjf46/PycharmProjects/PMSP_MAPS_23Summer",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\cjf46\PycharmProjects\PMSP_MAPS_23Summer" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
+  <component name="RunManager" selected="Python.open_pickle">
     <configuration name="실습용" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PMSP_MAPS_23Summer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -162,9 +164,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.GA" />
         <item itemvalue="Python.open_pickle" />
+        <item itemvalue="Python.GA" />
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.실습용" />
         <item itemvalue="Python.123" />
       </list>
@@ -323,7 +325,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/open_pickle.py</url>
-          <line>13</line>
+          <line>15</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
