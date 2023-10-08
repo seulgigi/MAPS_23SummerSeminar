@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="fix : ga중복값 제거" />
+
     <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="fix : ga반복문 추가">
       <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26__1_15__________.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/shelf/2023-09-26_오후_1_15,_업데이트_전에_커밋되지_않은_변경_내용_[변경]/shelved.patch" afterDir="false" />
     </list>
     <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="Docs : gurobi 추가" />
+
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,6 +46,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/cjf46/PycharmProjects/PMSP_MAPS_23Summer",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
@@ -56,15 +69,21 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\cjf46\PycharmProjects\PMSP_MAPS_23Summer" />
     </key>
   </component>
+
+  <component name="RunManager" selected="Python.open_pickle">
+    <configuration name="실습용" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+
   <component name="RunManager" selected="Python tests.Python tests for main.test5">
     <configuration name="Python tests for main.test1" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+
       <module name="PMSP_MAPS_23Summer" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -141,11 +160,19 @@
     </configuration>
     <recent_temporary>
       <list>
+
+        <item itemvalue="Python.open_pickle" />
+        <item itemvalue="Python.GA" />
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.실습용" />
+        <item itemvalue="Python.123" />
+
         <item itemvalue="Python tests.Python tests for main.test5" />
         <item itemvalue="Python tests.Python tests for main.test6" />
         <item itemvalue="Python tests.Python tests for main.test3" />
         <item itemvalue="Python tests.Python tests for main.test1" />
         <item itemvalue="Python tests.Python tests in main.py" />
+
       </list>
     </recent_temporary>
   </component>
@@ -253,7 +280,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695702271781</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fix : ga중복값 제거">
+      <option name="closed" value="true" />
+      <created>1696772754643</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1696772754643</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -302,7 +337,8 @@
     <MESSAGE value="Docs : milp ortool 코드 추가" />
     <MESSAGE value="Docs : gurobi 추가" />
     <MESSAGE value="fix : ga반복문 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : ga반복문 추가" />
+    <MESSAGE value="fix : ga중복값 제거" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : ga중복값 제거" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -314,7 +350,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/open_pickle.py</url>
-          <line>13</line>
+          <line>15</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

@@ -16,6 +16,14 @@ class chrosome:
         for j in np.random.permutation(self.prob.job_list):
             self.chrosome.append([j, random.choice(self.prob.machine_list)])
 
+    def __eq__(self, other):
+        if not isinstance(other, chrosome):
+            return NotImplemented
+        return self.chrosome == other.chrosome
+    #뭔지 모르겠음
+    def __hash__(self):
+        return hash(str(self.schedule_list) + str(self.total_time))
+
     def sheduling(self):
         self.schedule_list = [[] for _ in range(self.prob.numMch)]
         for l in self.prob.machine_list:
@@ -62,7 +70,7 @@ def crossover_operator(population):
 
 
 if __name__ == '__main__':
-    for r in range(10):          # 한실험당 10번 진행
+    for r in range(3):          # 한실험당 10번 진행
         for k in range(10):     # generation
             population = []
             for o in range(100):
@@ -74,6 +82,7 @@ if __name__ == '__main__':
                     box.total_time = box.add_totaltime()
                     population.append(box)
                     #population.append(generate_initial_population(test_instance))
+                population = list(set(population))
                 population = sorted(population, key=lambda x: x.total_time)
 
 
@@ -83,7 +92,7 @@ if __name__ == '__main__':
                     random_chrosome.schedule_list = random_chrosome.sheduling()
                     random_chrosome.total_time = random_chrosome.add_totaltime()
                     population.append(random_chrosome)
-
+                population = list(set(population))
                 population= sorted(population, key=lambda x: x.total_time)[:4]
 
                 for i in range(0):  # 반복되는 수만큼 유전자 조합하여 생성
@@ -91,8 +100,9 @@ if __name__ == '__main__':
                     crossed_chrosome.schedule_list = crossed_chrosome.sheduling()
                     crossed_chrosome.total_time = crossed_chrosome.add_totaltime()
                     population.append(crossed_chrosome)
+                population = list(set(population))
                 population= sorted(population, key=lambda x: x.total_time)[:4]
 
-            with open('GA_answer(10:100)_{}.pickle'.format(o+1), mode='wb') as fw:
-                pickle.dump(population, fw)
+        with open('GA_answer_{}.pickle'.format(r+1), mode='wb') as fw:
+            pickle.dump(population, fw)
 
