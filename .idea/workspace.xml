@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="fix : ga반복문 추가">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GA.py" beforeDir="false" afterPath="$PROJECT_DIR$/GA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test Results - .html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/open_pickle.py" beforeDir="false" afterPath="$PROJECT_DIR$/open_pickle.py" afterDir="false" />
-    </list>
+    <list default="true" id="437fba95-2c6b-4d74-b4b0-2fda644b388c" name="변경" comment="fix : ga중복값 제거" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -267,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695702271781</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fix : ga중복값 제거">
+      <option name="closed" value="true" />
+      <created>1696772754643</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1696772754643</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -313,7 +316,8 @@
     <MESSAGE value="Docs : milp ortool 코드 추가" />
     <MESSAGE value="Docs : gurobi 추가" />
     <MESSAGE value="fix : ga반복문 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix : ga반복문 추가" />
+    <MESSAGE value="fix : ga중복값 제거" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix : ga중복값 제거" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
