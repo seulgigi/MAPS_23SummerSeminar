@@ -37,7 +37,7 @@ def cp_scheduling(prob:Instance):
     return msol
 
 
-    """# 그래프 부분
+    # 그래프 부분
     rcParams['figure.figsize'] = 25, 5
     seq = [*range(0, nbrOfMachines)]
     job_id = dict()
@@ -55,7 +55,7 @@ def cp_scheduling(prob:Instance):
             j1 = job_id[vs[j].get_name()]
             j2 = job_id[vs[j + 1].get_name()]
             visu.transition(end, end + setup_matrix[m][j1][j2])
-    visu.show()"""
+    visu.show()
 
 
 def cp_scheduling_ortools(prob:Instance):
