@@ -112,7 +112,24 @@ def milp_scheduling_ortools(prob:Instance):
     solver.EnableOutput()
     status = solver.Solve()
 
+    # 그래프 부분
+    jobsNum = [*range(0, SJ)]
+    fig, ax = plt.subplots(nrows=prob.numJob, ncols=1, figsize=(10, 5)) # 전체 플롯, 그래프
 
+    # start time, end time 추가
+    #
+    #
+
+    # 그래프 설정
+    ax.barh(jobsNum, solver.solution_value(), height=0.5, color='lightgreen')
+    ax.set_xticks(SJ)
+    ax.set_xticklabels([f'Job {j}' for j in SJ])
+    ax.set_ylabel('Value')
+    ax.set_title('MILP Scheduling ortools')
+    ax.legend(loc='best', bbox_to_anchor=(1, 1))
+
+    plt.tight_layout()
+    plt.show()
 
     if status == pywraplp.Solver.OPTIMAL:
         print('Solution:')
